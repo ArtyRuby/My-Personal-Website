@@ -8,7 +8,8 @@
 
 ### 📄 在线简历
 如果您想了解我的专业背景、工作经历和技能，请点击查看我的网页版简历：
-👉 点击访问简历页面：https://github.com/ArtyRuby/My-Personal-Website/blob/main/resume/index.html
+👉 下载文件后可打开简历页面：https://github.com/ArtyRuby/My-Personal-Website/blob/main/resume
+💝 为节省您的时间，可点击进行预览：https://github.com/ArtyRuby/My-Personal-Website/tree/main/网页预览
 
 ### 📷 摄影与模特创作集
 除了专业工作，我也热爱视觉艺术创作。欢迎浏览我的写真模特创作作品集！
