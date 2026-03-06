@@ -8,7 +8,7 @@
 
 ### 📄 在线简历
 如果你想了解我的专业背景、工作经历和技能，请点击查看我的网页版简历：
-👉 **[点击访问简历页面：index.html](./index.html)** *(注：如果你的 GitHub Pages 已开启，可以将上面的链接替换为你的 GitHub Pages 网址，例如 `https://你的用户名.github.io/你的仓库名/`)*
+👉 点击访问简历页面：https://github.com/ArtyRuby/My-Personal-Website/blob/main/resume/index.html
 
 ### 📷 摄影与模特创作集
 除了专业工作，我也热爱视觉艺术创作。欢迎浏览我的写真模特创作作品集！
@@ -24,6 +24,6 @@
 如果你对我的经历、作品感兴趣，或者有任何工作面试机会，随时欢迎与我交流：
 
 * lixinyan35@163.com
-* 电话/WeChat:** 13690616646
+* 电话/WeChat:13690616646
 
 再次感谢您的访问，祝您今天过得愉快！✨
