@@ -1,0 +1,75 @@
+╔════════════════════════════════════════════════════════════════╗
+║              作品集网站 - 快速上手指南                          ║
+╚════════════════════════════════════════════════════════════════╝
+
+📁 需要添加的文件：
+
+1️⃣ 个人头像
+   路径: /Users/mi/cursor/resume/assets/images/avatar.jpg
+   方法: 拖拽你的头像图片到这个位置，重命名为 avatar.jpg
+
+2️⃣ 项目配图（6张）
+   路径: /Users/mi/cursor/resume/assets/images/projects/
+   
+   需要的文件名：
+   ├── meland.jpg          (Meland 联名项目)
+   ├── pla-trial.jpg       (PLA Trial 新品)
+   ├── spring-combo.jpg    (新春耗材)
+   ├── jisulife.jpg        (Jisulife 品牌)
+   ├── xiaomi-cloud.jpg    (小米云服务)
+   └── marketing-case.jpg  (策划案)
+
+3️⃣ 简历 PDF
+   路径: /Users/mi/cursor/resume/assets/pdf/resume.pdf
+   方法: 拖拽你的简历 PDF 到这个位置，重命名为 resume.pdf
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 快速打开文件夹：
+
+在终端执行以下命令：
+
+# 打开项目图片文件夹
+open /Users/mi/cursor/resume/assets/images/projects
+
+# 打开头像文件夹
+open /Users/mi/cursor/resume/assets/images
+
+# 打开 PDF 文件夹
+open /Users/mi/cursor/resume/assets/pdf
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+👀 预览网站：
+
+方法1（简单）：
+   双击 index.html 文件
+
+方法2（推荐）：
+   cd /Users/mi/cursor/resume
+   python3 -m http.server 8000
+   然后访问: http://localhost:8000
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️ 重要提示：
+
+✅ 图片规格：至少 800x600px
+✅ 头像规格：至少 500x500px（正方形）
+✅ 如果图片不存在，会自动显示 emoji 占位符
+✅ 所有图片格式支持：JPG、PNG、WebP
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📝 检查清单：
+
+[ ] 已添加个人头像
+[ ] 已添加 6 张项目配图
+[ ] 已添加简历 PDF
+[ ] 已在浏览器预览网站
+[ ] 所有图片正常显示
+[ ] 简历下载按钮正常工作
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎉 完成后即可投递使用！

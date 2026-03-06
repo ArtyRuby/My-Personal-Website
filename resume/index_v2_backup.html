@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby Li | Product Marketing Storyteller</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #151515;
+            --bg-card: rgba(30, 30, 35, 0.6);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-purple: #a78bfa;
+            --accent-glow: rgba(167, 139, 250, 0.5);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 液态玻璃效果 */
+        .glass-effect {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+        }
+
+        /* 霓虹呼吸灯效果 */
+        @keyframes neon-breathe {
+            0%, 100% {
+                box-shadow: 0 0 10px var(--accent-glow),
+                            0 0 20px var(--accent-glow),
+                            0 0 30px var(--accent-glow);
+            }
+            50% {
+                box-shadow: 0 0 20px var(--accent-glow),
+                            0 0 40px var(--accent-glow),
+                            0 0 60px var(--accent-glow);
+            }
+        }
+
+        .neon-glow {
+            animation: neon-breathe 3s ease-in-out infinite;
+        }
+
+        /* 导航栏 */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 60px;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(10, 10, 10, 0.8);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 15px 60px;
+            background: rgba(10, 10, 10, 0.95);
+        }
+
+        nav .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-purple);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 120px 60px 60px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(167, 139, 250, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            margin: 0 auto 40px;
+            border: 3px solid var(--accent-purple);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-avatar::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(45deg, var(--accent-purple), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+        }
+
+        .hero-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 24px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .hero .slogan {
+            font-size: 18px;
+            color: var(--accent-purple);
+            margin-bottom: 50px;
+            font-style: italic;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--accent-purple);
+            color: var(--text-primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--glass-bg);
+            border-color: var(--accent-purple);
+        }
+
+        /* Section 通用样式 */
+        section {
+            padding: 120px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Projects - 便当盒卡片布局 + 图片轮播 */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-purple), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 10;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-purple);
+            box-shadow: 0 20px 60px rgba(167, 139, 250, 0.2);
+        }
+
+        /* 图片轮播容器 */
+        .project-image {
+            width: 100%;
+            height: 320px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.2) 0%, rgba(30, 30, 35, 0.8) 100%);
+        }
+
+        .carousel-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .carousel-slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 轮播指示器 */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .carousel-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            padding: 0;
+        }
+
+        .carousel-indicator.active {
+            background: var(--accent-purple);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .carousel-indicator:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        /* 轮播箭头 */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 10;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .project-card:hover .carousel-nav {
+            opacity: 1;
+        }
+
+        .carousel-nav:hover {
+            background: rgba(167, 139, 250, 0.8);
+            border-color: var(--accent-purple);
+        }
+
+        .carousel-nav.prev {
+            left: 10px;
+        }
+
+        .carousel-nav.next {
+            right: 10px;
+        }
+
+        .project-content {
+            padding: 30px;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .project-tag {
+            padding: 4px 12px;
+            background: rgba(167, 139, 250, 0.2);
+            border-radius: 50px;
+            font-size: 12px;
+            color: var(--accent-purple);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+        }
+
+        .project-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .project-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .project-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding-top: 20px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-purple);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Contact Section */
+        .contact-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .contact-card {
+            padding: 40px 20px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-purple);
+        }
+
+        .contact-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .contact-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .contact-value {
+            font-size: 16px;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .contact-value a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-value a:hover {
+            color: var(--accent-purple);
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            background: var(--bg-secondary);
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* 视差效果 */
+        .parallax-element {
+            transition: transform 0.3s ease-out;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 56px;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 30px;
+            }
+
+            nav ul {
+                gap: 20px;
+            }
+
+            section {
+                padding: 80px 30px;
+            }
+
+            .hero {
+                padding: 100px 30px 40px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero .subtitle {
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 36px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* 加载动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* 滚动提示 */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 30px;
+            height: 50px;
+            border: 2px solid var(--accent-purple);
+            border-radius: 50px;
+            position: relative;
+        }
+
+        .scroll-indicator span::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            width: 6px;
+            height: 10px;
+            margin-left: -3px;
+            background: var(--accent-purple);
+            border-radius: 4px;
+            animation: scroll 2s infinite;
+        }
+
+        @keyframes scroll {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav id="navbar">
+        <div class="nav-content">
+            <div class="logo">Ruby Li</div>
+            <ul>
+                <li><a href="#projects">项目</a></li>
+                <li><a href="#contact">联系</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content fade-in-up">
+            <div class="hero-avatar neon-glow">
+                <img src="assets/images/avatar.jpg" alt="Ruby Li">
+            </div>
+            <h1>Ruby Li</h1>
+            <p class="subtitle">Product Marketing Storyteller</p>
+            <p class="slogan">做一个有审美且 solid 的 storyteller</p>
+            <div class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">查看作品</a>
+                <a href="#contact" class="btn btn-secondary">联系我</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" style="background: var(--bg-secondary);">
+        <div class="section-header">
+            <h2 class="section-title">项目作品集</h2>
+            <p class="section-subtitle">从技术功能到用户价值的精准翻译，让产品与用户之间产生情感共鸣</p>
+        </div>
+        <div class="projects-grid">
+            <!-- Meland 项目 - 4 张图片 -->
+            <div class="project-card parallax-element">
+                <div class="project-image">
+                    <div class="carousel-container" data-carousel="meland">
+                        <div class="carousel-slide active">
+                            <img src="assets/images/projects/meland1.jpg" alt="Meland 项目 1">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="assets/images/projects/meland2.jpg" alt="Meland 项目 2">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="assets/images/projects/meland3.jpg" alt="Meland 项目 3">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="assets/images/projects/meland4.jpg" alt="Meland 项目 4">
+                        </div>
+                        <button class="carousel-nav prev" onclick="changeSlide('meland', -1)">‹</button>
+                        <button class="carousel-nav next" onclick="changeSlide('meland', 1)">›</button>
+                        <div class="carousel-indicators">
+                            <button class="carousel-indicator active" onclick="goToSlide('meland', 0)"></button>
+                            <button class="carousel-indicator" onclick="goToSlide('meland', 1)"></button>
+                            <button class="carousel-indicator" onclick="goToSlide('meland', 2)"></button>
+                            <button class="carousel-indicator" onclick="goToSlide('meland', 3)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">品牌联动</span>
+                        <span class="project-tag">STEAM 教育</span>
+                        <span class="project-tag">B 端解决方案</span>
+                    </div>
+                    <h3 class="project-title">Meland 品牌联名 - 破圈营销</h3>
+                    <p class="project-description">
+                        主导拓竹科技与深圳高端亲子乐园 Meland 品牌联名，挖掘 STEAM 教育与破圈价值，联动内部团队完成 CyberBrick 沙盘建模与模块创作，传递拓竹 B 端行业解决方案能力，实现品牌声量与商业价值双提升。
+                    </p>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">B2B</span>
+                            <span class="metric-label">标杆案例</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">4 场景</span>
+                            <span class="metric-label">全链路落地</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PLA Trial 项目 - 3 张图片 -->
+            <div class="project-card parallax-element">
+                <div class="project-image">
+                    <div class="carousel-container" data-carousel="pla">
+                        <div class="carousel-slide active">
+                            <img src="assets/images/projects/pla-trial.png" alt="PLA Trial 1">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="assets/images/projects/pla-trial2.png" alt="PLA Trial 2">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="assets/images/projects/pla-trial3.png" alt="PLA Trial 3">
+                        </div>
+                        <button class="carousel-nav prev" onclick="changeSlide('pla', -1)">‹</button>
+                        <button class="carousel-nav next" onclick="changeSlide('pla', 1)">›</button>
+                        <div class="carousel-indicators">
+                            <button class="carousel-indicator active" onclick="goToSlide('pla', 0)"></button>
+                            <button class="carousel-indicator" onclick="goToSlide('pla', 1)"></button>
+                            <button class="carousel-indicator" onclick="goToSlide('pla', 2)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">新品营销</span>
+                        <span class="project-tag">产品定义</span>
+                        <span class="project-tag">全链路运营</span>
+                    </div>
+                    <h3 class="project-title">PLA Trial 新品上市营销</h3>
+                    <p class="project-description">
+                        负责 PLA Trial 等新品耗材上市营销，基于市场需求与竞品调研完成产品定义，提炼"柔色、轻量"等核心卖点，设计耗材场景化展示，将产品价值翻译为用户可感知的沟通语言。
+                    </p>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">1000+</span>
+                            <span class="metric-label">首月销量</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">24.8%</span>
+                            <span class="metric-label">CTR</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 其他项目卡片占位 -->
+            <div class="project-card parallax-element">
+                <div class="project-image" style="display: flex; align-items: center; justify-content: center; font-size: 64px;">
+                    🎁
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">节日营销</span>
+                        <span class="project-tag">故事化叙事</span>
+                    </div>
+                    <h3 class="project-title">新春耗材 Combo 组合营销</h3>
+                    <p class="project-description">
+                        针对 PLA 耗材动销不均痛点，结合新春节点主导春节主题色 Combo 策划，以故事化叙事与场景化视觉传递"3D 打印融入日常"理念。
+                    </p>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">双提升</span>
+                            <span class="metric-label">曝光 & 销售</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">心智教育</span>
+                            <span class="metric-label">用户认知</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card parallax-element">
+                <div class="project-image" style="display: flex; align-items: center; justify-content: center; font-size: 64px;">
+                    🌬️
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">品牌运营</span>
+                        <span class="project-tag">达人矩阵</span>
+                    </div>
+                    <h3 class="project-title">Jisulife 品牌爆款打造</h3>
+                    <p class="project-description">
+                        负责东南亚市场消费电子运营，主推 Outdoor 系列手持风扇，协同机构维护 10k+ 达人矩阵，打造类目细分爆款。
+                    </p>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">$160k</span>
+                            <span class="metric-label">品牌日 GMV</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">$20k+</span>
+                            <span class="metric-label">场均直播</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" style="background: var(--bg-primary);">
+        <div class="contact-content">
+            <div class="section-header">
+                <h2 class="section-title">联系方式</h2>
+                <p class="section-subtitle">期待与你交流产品营销、品牌故事与创意想法</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card glass-effect neon-glow parallax-element">
+                    <div class="contact-icon">📧</div>
+                    <div class="contact-label">邮箱</div>
+                    <div class="contact-value">
+                        <a href="mailto:lixinyan35@163.com">lixinyan35@163.com</a>
+                    </div>
+                </div>
+                <div class="contact-card glass-effect neon-glow parallax-element">
+                    <div class="contact-icon">📱</div>
+                    <div class="contact-label">电话</div>
+                    <div class="contact-value">136-9061-6646</div>
+                </div>
+                <div class="contact-card glass-effect neon-glow parallax-element">
+                    <div class="contact-icon">📍</div>
+                    <div class="contact-label">现居地</div>
+                    <div class="contact-value">广东省深圳市</div>
+                </div>
+            </div>
+            <div style="margin-top: 60px;">
+                <a href="assets/pdf/resume.pdf" class="btn btn-primary" style="margin-right: 20px;" download>下载简历 PDF</a>
+                <a href="https://linkedin.com" class="btn btn-secondary" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Ruby Li. All rights reserved.</p>
+        <p style="margin-top: 10px; font-size: 12px;">Be a Storyteller with Design Thinking</p>
+    </footer>
+
+    <script>
+        // 轮播功能
+        const carousels = {};
+
+        function initCarousels() {
+            document.querySelectorAll('[data-carousel]').forEach(carousel => {
+                const id = carousel.getAttribute('data-carousel');
+                carousels[id] = {
+                    element: carousel,
+                    currentSlide: 0,
+                    slides: carousel.querySelectorAll('.carousel-slide'),
+                    indicators: carousel.querySelectorAll('.carousel-indicator')
+                };
+
+                // 自动播放
+                setInterval(() => changeSlide(id, 1), 5000);
+            });
+        }
+
+        function changeSlide(carouselId, direction) {
+            const carousel = carousels[carouselId];
+            if (!carousel) return;
+
+            const totalSlides = carousel.slides.length;
+            carousel.currentSlide = (carousel.currentSlide + direction + totalSlides) % totalSlides;
+
+            updateCarousel(carouselId);
+        }
+
+        function goToSlide(carouselId, slideIndex) {
+            const carousel = carousels[carouselId];
+            if (!carousel) return;
+
+            carousel.currentSlide = slideIndex;
+            updateCarousel(carouselId);
+        }
+
+        function updateCarousel(carouselId) {
+            const carousel = carousels[carouselId];
+            if (!carousel) return;
+
+            // 更新幻灯片
+            carousel.slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === carousel.currentSlide);
+            });
+
+            // 更新指示器
+            carousel.indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === carousel.currentSlide);
+            });
+        }
+
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 视差效果
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.parallax-element');
+
+            parallaxElements.forEach((element, index) => {
+                const rect = element.getBoundingClientRect();
+                const elementVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+                if (elementVisible) {
+                    const speed = 0.05;
+                    const yPos = -(scrolled - (rect.top + window.pageYOffset)) * speed;
+                    element.style.transform = `translateY(${yPos}px)`;
+                }
+            });
+        });
+
+        // 滚动动画触发
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.project-card, .contact-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // 鼠标跟随效果
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+
+            const heroBg = document.querySelector('.hero-bg');
+            if (heroBg) {
+                heroBg.style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px)`;
+            }
+        });
+
+        // 初始化
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+            initCarousels();
+        });
+
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.5s ease';
+    </script>
+</body>
+</html>

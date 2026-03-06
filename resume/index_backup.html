@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby Li | Product Marketing Storyteller</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #151515;
+            --bg-card: rgba(30, 30, 35, 0.6);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-purple: #a78bfa;
+            --accent-glow: rgba(167, 139, 250, 0.5);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 液态玻璃效果 */
+        .glass-effect {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+        }
+
+        /* 霓虹呼吸灯效果 */
+        @keyframes neon-breathe {
+            0%, 100% {
+                box-shadow: 0 0 10px var(--accent-glow),
+                            0 0 20px var(--accent-glow),
+                            0 0 30px var(--accent-glow);
+            }
+            50% {
+                box-shadow: 0 0 20px var(--accent-glow),
+                            0 0 40px var(--accent-glow),
+                            0 0 60px var(--accent-glow);
+            }
+        }
+
+        .neon-glow {
+            animation: neon-breathe 3s ease-in-out infinite;
+        }
+
+        /* 导航栏 */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 60px;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(10, 10, 10, 0.8);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 15px 60px;
+            background: rgba(10, 10, 10, 0.95);
+        }
+
+        nav .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-purple);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 120px 60px 60px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(167, 139, 250, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            margin: 0 auto 40px;
+            border: 3px solid var(--accent-purple);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-avatar::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(45deg, var(--accent-purple), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+        }
+
+        .hero-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 24px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .hero .slogan {
+            font-size: 18px;
+            color: var(--accent-purple);
+            margin-bottom: 50px;
+            font-style: italic;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--accent-purple);
+            color: var(--text-primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--glass-bg);
+            border-color: var(--accent-purple);
+        }
+
+        /* Section 通用样式 */
+        section {
+            padding: 120px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--accent-purple);
+        }
+
+        .about-text p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .info-item {
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-purple);
+        }
+
+        .info-item .label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .info-item .value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Skills Tags */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .skill-tag {
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            transform: translateY(-2px);
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent-purple), transparent);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 60px;
+            padding: 30px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+            border-color: var(--accent-purple);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -46px;
+            top: 40px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-purple);
+            border: 3px solid var(--bg-primary);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .timeline-date {
+            font-size: 14px;
+            color: var(--accent-purple);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .timeline-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .timeline-company {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .timeline-description {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .achievements {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .achievements li {
+            padding-left: 25px;
+            margin-bottom: 10px;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .achievements li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-purple);
+            font-weight: bold;
+        }
+
+        /* Projects - 便当盒卡片布局 */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-purple), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-purple);
+            box-shadow: 0 20px 60px rgba(167, 139, 250, 0.2);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.2) 0%, rgba(30, 30, 35, 0.8) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 图片轮播容器 */
+        .image-carousel {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 轮播指示器 */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .carousel-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-indicator.active {
+            background: var(--accent-purple);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .carousel-indicator:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        /* 轮播箭头 */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 10;
+            color: white;
+            font-size: 18px;
+        }
+
+        .project-card:hover .carousel-nav {
+            opacity: 1;
+        }
+
+        .carousel-nav:hover {
+            background: rgba(167, 139, 250, 0.8);
+            border-color: var(--accent-purple);
+        }
+
+        .carousel-nav.prev {
+            left: 10px;
+        }
+
+        .carousel-nav.next {
+            right: 10px;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .project-image .emoji-placeholder {
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(167, 139, 250, 0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .project-card:hover .project-image::after {
+            transform: translateX(100%);
+        }
+
+        .project-content {
+            padding: 30px;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .project-tag {
+            padding: 4px 12px;
+            background: rgba(167, 139, 250, 0.2);
+            border-radius: 50px;
+            font-size: 12px;
+            color: var(--accent-purple);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+        }
+
+        .project-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .project-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .project-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding-top: 20px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-purple);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Methodology Section */
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .methodology-phase {
+            padding: 40px;
+            background: var(--bg-card);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .methodology-phase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-purple), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s ease;
+        }
+
+        .methodology-phase:hover::before {
+            transform: scaleX(1);
+        }
+
+        .methodology-phase:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-purple);
+        }
+
+        .phase-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .phase-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .phase-subtitle {
+            font-size: 14px;
+            color: var(--accent-purple);
+            margin-bottom: 20px;
+        }
+
+        .phase-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .phase-actions {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .phase-actions li {
+            padding: 8px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .phase-actions li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-purple);
+        }
+
+        /* Contact Section */
+        .contact-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .contact-card {
+            padding: 40px 20px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-purple);
+        }
+
+        .contact-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .contact-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .contact-value {
+            font-size: 16px;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .contact-value a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-value a:hover {
+            color: var(--accent-purple);
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            background: var(--bg-secondary);
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* 视差效果 */
+        .parallax-element {
+            transition: transform 0.3s ease-out;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 56px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .methodology-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 30px;
+            }
+
+            nav ul {
+                gap: 20px;
+            }
+
+            section {
+                padding: 80px 30px;
+            }
+
+            .hero {
+                padding: 100px 30px 40px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero .subtitle {
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 36px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* 加载动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* 滚动提示 */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 30px;
+            height: 50px;
+            border: 2px solid var(--accent-purple);
+            border-radius: 50px;
+            position: relative;
+        }
+
+        .scroll-indicator span::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            width: 6px;
+            height: 10px;
+            margin-left: -3px;
+            background: var(--accent-purple);
+            border-radius: 4px;
+            animation: scroll 2s infinite;
+        }
+
+        @keyframes scroll {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav id="navbar">
+        <div class="nav-content">
+            <div class="logo">Ruby Li</div>
+            <ul>
+                <li><a href="#about">关于</a></li>
+                <li><a href="#experience">经历</a></li>
+                <li><a href="#projects">项目</a></li>
+                <li><a href="#methodology">方法论</a></li>
+                <li><a href="#contact">联系</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content fade-in-up">
+            <div class="hero-avatar neon-glow">
+                <img src="assets/images/avatar.jpg" alt="Ruby Li" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 200\'%3E%3Crect fill=\'%231e1e23\' width=\'200\' height=\'200\'/%3E%3Ctext x=\'100\' y=\'110\' font-size=\'80\' text-anchor=\'middle\' fill=\'%23a78bfa\' font-family=\'Arial\'%3ER%3C/text%3E%3C/svg%3E'">
+            </div>
+            <h1>Ruby Li</h1>
+            <p class="subtitle">Product Marketing Storyteller</p>
+            <p class="slogan">做一个有审美且 solid 的 storyteller</p>
+            <div class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">查看作品</a>
+                <a href="#contact" class="btn btn-secondary">联系我</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="section-header">
+            <h2 class="section-title">关于我</h2>
+            <p class="section-subtitle">在 AI 驱动的内容同质化时代，成为产品与用户之间的情感翻译官</p>
+        </div>
+        <div class="about-content">
+            <div class="about-text parallax-element">
+                <h3>Product Marketing Specialist</h3>
+                <p>华中科技大学（985）供应链金融保送研究生，曾任职于拓竹科技、字节跳动、小米科技等头部科技公司，专注于产品营销全案策划与品牌故事叙事。</p>
+                <p>擅长将复杂的工程级技术黑话转化为用户直觉式的交互体验，坚守美学引领的极简视觉，通过全链路场景化建模完成用户心智渗透。</p>
+                <div class="skills-container" style="margin-top: 30px;">
+                    <span class="skill-tag">产品营销</span>
+                    <span class="skill-tag">品牌策划</span>
+                    <span class="skill-tag">海外市场运营</span>
+                    <span class="skill-tag">数据分析</span>
+                    <span class="skill-tag">A/B Testing</span>
+                    <span class="skill-tag">视觉创意</span>
+                    <span class="skill-tag">内容营销</span>
+                    <span class="skill-tag">跨部门协作</span>
+                </div>
+            </div>
+            <div class="info-grid parallax-element">
+                <div class="info-item glass-effect">
+                    <div class="label">教育背景</div>
+                    <div class="value">华中科技大学</div>
+                    <div class="value" style="font-size: 14px; color: var(--text-secondary); margin-top: 5px;">供应链金融 · 保研</div>
+                </div>
+                <div class="info-item glass-effect">
+                    <div class="label">本科院校</div>
+                    <div class="value">武汉理工大学</div>
+                    <div class="value" style="font-size: 14px; color: var(--text-secondary); margin-top: 5px;">会计学 · 优秀毕业生</div>
+                </div>
+                <div class="info-item glass-effect">
+                    <div class="label">工作语言</div>
+                    <div class="value">中 / 英 / 粤</div>
+                </div>
+                <div class="info-item glass-effect">
+                    <div class="label">专业证书</div>
+                    <div class="value">CPA 专业阶段</div>
+                </div>
+                <div class="info-item glass-effect">
+                    <div class="label">工具能力</div>
+                    <div class="value">Figma / Python / SQL</div>
+                </div>
+                <div class="info-item glass-effect">
+                    <div class="label">自媒体</div>
+                    <div class="value">5000+ 粉丝</div>
+                    <div class="value" style="font-size: 14px; color: var(--text-secondary); margin-top: 5px;">65万+ 浏览量</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <div class="section-header">
+            <h2 class="section-title">工作经历</h2>
+            <p class="section-subtitle">深耕硬件科技与消费电子领域，贯穿产品生命周期的全链路营销经验</p>
+        </div>
+        <div class="timeline parallax-element">
+            <div class="timeline-item glass-effect">
+                <div class="timeline-date">2025.12 - 至今</div>
+                <div class="timeline-title">产品营销</div>
+                <div class="timeline-company">拓竹科技有限公司（3D 打印行业领军品牌）</div>
+                <div class="timeline-description">
+                    负责海外与国内市场 3D 打印机耗材及配件产品营销，贯穿产品生命周期全链路运营。
+                </div>
+                <ul class="achievements">
+                    <li>PLA Trial 新品上市首月销售破千，CTR 24.8%（vs 同期 PLA Matte 高 5%）</li>
+                    <li>主导拓竹与 Meland 高端亲子乐园品牌联名，打造 STEAM 教育标杆案例</li>
+                    <li>策划新春耗材 Combo 组合营销，完成用户心智教育，实现曝光与销售转化双提升</li>
+                    <li>搭建多 agency 产品营销体系，赋能 storyteller 产品营销工作流</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item glass-effect">
+                <div class="timeline-date">2025.03 - 2025.11</div>
+                <div class="timeline-title">消费电子行业运营（东南亚市场）</div>
+                <div class="timeline-company">字节跳动 - 国际电商平台</div>
+                <div class="timeline-description">
+                    负责东南亚市场消费电子运营，重点支持行业商家产品销售转化与 GMV 增长。
+                </div>
+                <ul class="achievements">
+                    <li>Jisulife 品牌 7 月品牌日实现 160k 美金 showcase</li>
+                    <li>打造 2 款风扇类目细分爆款（Outdoor 系列手持风扇）</li>
+                    <li>维护 10k+ 头-腰-尾达人矩阵，周均精准匹配 4 场头部达人直播</li>
+                    <li>场均超 $20k GMV，聚焦 IP 合作款进行短视频素材混剪与话题加热</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item glass-effect">
+                <div class="timeline-date">2024.08 - 2024.12</div>
+                <div class="timeline-title">商业化产品运营</div>
+                <div class="timeline-company">小米科技有限责任公司</div>
+                <div class="timeline-description">
+                    负责小米云服务活动营销与产品迭代优化，提升用户产品体验与满意度。
+                </div>
+                <ul class="achievements">
+                    <li>双 11 活动期 GMV 增长 17.3%，高端机型支付增长 29%</li>
+                    <li>采取 A/B Test 优化广告投放链路，阶梯定制产品活动价</li>
+                    <li>圈选 5 类目标人群精细化营销，提升转化效率</li>
+                    <li>运用 Figma、Python 等工具制作需求文档，推动产品优化</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item glass-effect">
+                <div class="timeline-date">2023.09 - 2023.12</div>
+                <div class="timeline-title">个人创业 - GTM（北美市场）</div>
+                <div class="timeline-company">TEMU - 拼多多跨境电商平台</div>
+                <div class="timeline-description">
+                    通过市场调研与选品策略，独立操盘北美市场跨境电商业务。
+                </div>
+                <ul class="achievements">
+                    <li>高品质婴儿袜在高价同类中成功取得 15% 订单占比</li>
+                    <li>根据节日 IP 与宗教文化横向拓展超 20 款产品样式，打造 3 款节日爆款</li>
+                    <li>盈利超 4k 人民币，利用 N+7N 备货逻辑，缺货率下降 80%</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" style="background: var(--bg-secondary);">
+        <div class="section-header">
+            <h2 class="section-title">项目作品集</h2>
+            <p class="section-subtitle">从技术功能到用户价值的精准翻译，让产品与用户之间产生情感共鸣</p>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card parallax-element">
+                <div class="project-image">
+                    <img src="assets/images/projects/meland.jpg" alt="Meland 品牌联名" onerror="this.style.display='none'; this.parentElement.querySelector('.emoji-placeholder').style.display='flex';">
+                    <div class="emoji-placeholder" style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 64px;">🏢</div>
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">品牌联动</span>
+                        <span class="project-tag">STEAM 教育</span>
+                        <span class="project-tag">B 端方案</span>
+                    </div>
+                    <h3 class="project-title">Meland 品牌联名 - 破圈营销</h3>
+                    <p class="project-description">
+                        主导拓竹科技与深圳高端亲子乐园 Meland 品牌联名，挖掘 STEAM 教育与破圈价值，联动内部团队完成 CyberBrick 沙盘建模与模块创作，传递拓竹 B 端行业解决方案能力，实现品牌声量与商业价值双提升。
+                    </p>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">B2B</span>
+                            <span class="metric-label">标杆案例</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">全链路</span>
+                            <span class="metric-label">项目落地</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card parallax-element">
+                <div class="project-image">
+                    <img src="assets/images/projects/pla-trial.jpg" alt="PLA Trial 新品" onerror="this.style.display='none'; this.parentElement.querySelector('.emoji-placeholder').style.display='flex';">
+                    <div class="emoji-placeholder" style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 64px;">🎨</div>
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">新品营销</span>
+                        <span class="project-tag">产品定义</span>
+                        <span class="project-tag">全链路运营</span>
+                    </div>
+                    <h3 class="project-title">PLA Trial 新品上市营销</h3>
+                    <p class="project-description">
+                        负责 PLA Trial 等新品耗材上市营销，基于市场需求与竞品调研完成产品定义，提炼"柔色、轻量"等核心卖点，设计耗材场景化展示，将产品价值翻译为用户可感知的沟通语言。
+                    </p>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">1000+</span>
+                            <span class="metric-label">首月销量</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">24.8%</span>
+                            <span class="metric-label">CTR</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card parallax-element">
+                <div class="project-image">
+                    <img src="assets/images/projects/spring-combo.jpg" alt="新春耗材 Combo" onerror="this.style.display='none'; this.parentElement.querySelector('.emoji-placeholder').style.display='flex';">
+                    <div class="emoji-placeholder" style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 64px;">🎁</div>
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">节日营销</span>
+                        <span class="project-tag">故事化叙事</span>
+                        <span class="project-tag">全渠道传播</span>
+                    </div>
+                    <h3 class="project-title">新春耗材 Combo 组合营销</h3>
+                    <p class="project-description">
+                        针对 PLA 耗材动销不均痛点，结合新春节点主导春节主题色 Combo 策划，以故事化叙事与场景化视觉传递"3D 打印融入日常"理念，独立负责社媒内容创意、脚本创作与全渠道传播落地。
+                    </p>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">双提升</span>
+                            <span class="metric-label">曝光 & 销售</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">心智教育</span>
+                            <span class="metric-label">用户认知</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card parallax-element">
+                <div class="project-image">
+                    <img src="assets/images/projects/jisulife.jpg" alt="Jisulife 品牌" onerror="this.style.display='none'; this.parentElement.querySelector('.emoji-placeholder').style.display='flex';">
+                    <div class="emoji-placeholder" style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 64px;">🌬️</div>
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">品牌运营</span>
+                        <span class="project-tag">达人矩阵</span>
+                        <span class="project-tag">爆款打造</span>
+                    </div>
+                    <h3 class="project-title">Jisulife 品牌爆款打造</h3>
+                    <p class="project-description">
+                        负责东南亚市场消费电子运营，主推 Outdoor 系列手持风扇，协同机构维护 10k+ 达人矩阵，聚焦黄油小熊 IP 合作款进行短视频素材混剪与商业化话题加热，打造类目细分爆款。
+                    </p>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">$160k</span>
+                            <span class="metric-label">品牌日 GMV</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">$20k+</span>
+                            <span class="metric-label">场均直播</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card parallax-element">
+                <div class="project-image">
+                    <img src="assets/images/projects/xiaomi-cloud.jpg" alt="小米云服务" onerror="this.style.display='none'; this.parentElement.querySelector('.emoji-placeholder').style.display='flex';">
+                    <div class="emoji-placeholder" style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 64px;">☁️</div>
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">活动营销</span>
+                        <span class="project-tag">A/B Test</span>
+                        <span class="project-tag">产品优化</span>
+                    </div>
+                    <h3 class="project-title">小米云服务双 11 营销</h3>
+                    <p class="project-description">
+                        负责小米云服务双 11 活动营销，采取 A/B Test 优化广告投放链路，阶梯定制产品活动价，圈选 5 类目标人群精细化营销，针对用户反馈改善产品推荐页面。
+                    </p>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">+17.3%</span>
+                            <span class="metric-label">GMV 增长</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">+29%</span>
+                            <span class="metric-label">高端机型</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card parallax-element">
+                <div class="project-image">
+                    <img src="assets/images/projects/marketing-case.jpg" alt="纤启新浪潮" onerror="this.style.display='none'; this.parentElement.querySelector('.emoji-placeholder').style.display='flex';">
+                    <div class="emoji-placeholder" style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 64px;">🏆</div>
+                </div>
+                <div class="project-content">
+                    <div class="project-tags">
+                        <span class="project-tag">商业策划</span>
+                        <span class="project-tag">情感营销</span>
+                        <span class="project-tag">国家级奖项</span>
+                    </div>
+                    <h3 class="project-title">纤启新浪潮 - 商业策划案</h3>
+                    <p class="project-description">
+                        市场营销国家级比赛第一负责人，借助大健康快消行业调研，跨界冲浪进行产品定位，策划 3 阶段"等浪、抓浪、冲浪"营销活动，精炼文字输出，深化情感营销作用。
+                    </p>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">国家级</span>
+                            <span class="metric-label">一等奖</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">省级</span>
+                            <span class="metric-label">一等奖</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology Section -->
+    <section id="methodology">
+        <div class="section-header">
+            <h2 class="section-title">工作方法论</h2>
+            <p class="section-subtitle">以极客精神深耕底层逻辑，将复杂的工程级架构黑话转化为小白用户直觉式的交互体验</p>
+        </div>
+        <div class="methodology-grid">
+            <div class="methodology-phase glass-effect parallax-element">
+                <div class="phase-icon">🏗️</div>
+                <div class="phase-title">技术解析与"卖点原矿"挖掘</div>
+                <div class="phase-subtitle">T-6月 | Technical Deconstruction</div>
+                <div class="phase-description">
+                    深入研发端，分析硬件底层的力学与物理特性，建立"技术说明书"向"消费者价值"的翻译矩阵。爬取极客社区识别痛点缺口，为营销找到首发炮弹。
+                </div>
+                <ul class="phase-actions">
+                    <li>市场洞察与竞品调研分析</li>
+                    <li>联动研发、材料部门立项讨论</li>
+                    <li>产出产品概念文档与定位策略</li>
+                </ul>
+            </div>
+
+            <div class="methodology-phase glass-effect parallax-element">
+                <div class="phase-icon">🎨</div>
+                <div class="phase-title">场景叙事与"美学降维"</div>
+                <div class="phase-subtitle">T-2月 | Narrative Engineering</div>
+                <div class="phase-description">
+                    用户分层场景矩阵设计，针对极客组与教育家庭组定制不同包装。建立品牌美学规范，拒绝廉价感，营销不仅是卖产品，是卖"掌控物质生产"的权力感。
+                </div>
+                <ul class="phase-actions">
+                    <li>拆解研发卖点，翻译为消费者语言</li>
+                    <li>把控文案调性与整体视觉规范</li>
+                    <li>产出上市宣发营销方案与 KOL 矩阵</li>
+                </ul>
+            </div>
+
+            <div class="methodology-phase glass-effect parallax-element">
+                <div class="phase-icon">🚀</div>
+                <div class="phase-title">全球化 GTM 与"全链路归因"</div>
+                <div class="phase-subtitle">T±0 | GTM Architecture</div>
+                <div class="phase-description">
+                    内容螺旋分发策略，T-30 预热期极客共创，T-0 爆发期跨平台联动。动态定价与组合算法，基于不同国家 AOV 差异实时调整营销券投放比例。
+                </div>
+                <ul class="phase-actions">
+                    <li>TikTok 算法推流 + 电商平台承接</li>
+                    <li>捆绑逻辑与价格弹性监控</li>
+                    <li>全渠道内容投放与数据看板</li>
+                </ul>
+            </div>
+
+            <div class="methodology-phase glass-effect parallax-element">
+                <div class="phase-icon">🔄</div>
+                <div class="phase-title">生态留存与"后链路价值"</div>
+                <div class="phase-subtitle">T+3月 | Ecosystem Expansion</div>
+                <div class="phase-description">
+                    模型驱动耗材策略，与全球设计师联名推出限定内容。LTV 增长引擎，基于用户机器累计打印时长自动推送维护包，通过教育降低退货率。
+                </div>
+                <ul class="phase-actions">
+                    <li>监控数据与社媒反馈，补充教育</li>
+                    <li>调整详情页 CTR 与人群标签</li>
+                    <li>产出数据复盘与产品迭代建议</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" style="background: var(--bg-secondary);">
+        <div class="contact-content">
+            <div class="section-header">
+                <h2 class="section-title">联系方式</h2>
+                <p class="section-subtitle">期待与你交流产品营销、品牌故事与创意想法</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card glass-effect neon-glow parallax-element">
+                    <div class="contact-icon">📧</div>
+                    <div class="contact-label">邮箱</div>
+                    <div class="contact-value">
+                        <a href="mailto:lixinyan35@163.com">lixinyan35@163.com</a>
+                    </div>
+                </div>
+                <div class="contact-card glass-effect neon-glow parallax-element">
+                    <div class="contact-icon">📱</div>
+                    <div class="contact-label">电话</div>
+                    <div class="contact-value">136-9061-6646</div>
+                </div>
+                <div class="contact-card glass-effect neon-glow parallax-element">
+                    <div class="contact-icon">📍</div>
+                    <div class="contact-label">现居地</div>
+                    <div class="contact-value">广东省深圳市</div>
+                </div>
+            </div>
+            <div style="margin-top: 60px;">
+                <a href="assets/pdf/resume.pdf" class="btn btn-primary" style="margin-right: 20px;" download>下载简历 PDF</a>
+                <a href="https://linkedin.com" class="btn btn-secondary" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Ruby Li. All rights reserved.</p>
+        <p style="margin-top: 10px; font-size: 12px;">Be a Storyteller with Design Thinking</p>
+    </footer>
+
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 视差效果
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.parallax-element');
+
+            parallaxElements.forEach((element, index) => {
+                const rect = element.getBoundingClientRect();
+                const elementTop = rect.top + window.pageYOffset;
+                const elementVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+                if (elementVisible) {
+                    const speed = 0.05;
+                    const yPos = -(scrolled - elementTop) * speed;
+                    element.style.transform = `translateY(${yPos}px)`;
+                }
+            });
+        });
+
+        // 滚动动画触发
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // 为所有卡片添加观察
+        document.querySelectorAll('.project-card, .timeline-item, .methodology-phase, .contact-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // 鼠标跟随效果（可选）
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+
+            const heroBg = document.querySelector('.hero-bg');
+            if (heroBg) {
+                heroBg.style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px)`;
+            }
+        });
+
+        // 添加加载动画
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
+
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.5s ease';
+    </script>
+</body>
+</html>
